@@ -28,11 +28,16 @@ export const links: LinksFunction = () => {
 export const loader = async ({
   request,
 }: LoaderFunctionArgs) => {
+  console.log(process.env.API_KEY)
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   const contacts = await getContacts(q);
-  return json({ contacts, q });
+  return json({ 
+    contacts, 
+    q });
 };
+
+
 
 export default function App() {
   const { contacts, q } = useLoaderData<typeof loader>();
