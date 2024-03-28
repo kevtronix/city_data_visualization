@@ -1,21 +1,22 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
+import Map from '../components/map.client'
+import { json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 
 
-const Map = lazy(() => import('react-map-gl'))
+export const loader = async () => {
+    return json({  mapboxToken: process.env.MAPBOX_ACCESS_TOKEN });
+};
 
-export default function City() { 
+export default function City() {
+    const { mapboxToken } = useLoaderData<typeof loader>();
+    if (!mapboxToken) {
+        throw new Error('Mapbox token is not defined');
+    }
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <Map
-                mapboxAccessToken={process.env.API_KEY}
-                initialViewState={{
-                    longitude: -122.4,
-                    latitude: 37.8,
-                    zoom: 14
-                }}
-                style={{ width: 600, height: 400 }}
-                mapStyle="mapbox://styles/mapbox/streets-v9"
-            />
+            <Map mapboxToken={mapboxToken} />
         </Suspense>
-    );
+    )
 }
