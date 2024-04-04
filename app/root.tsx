@@ -25,19 +25,16 @@ export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: appStylesHref }];
 };
 
-export const loader = async ({
-  request,
-}: LoaderFunctionArgs) => {
-  console.log(process.env.API_KEY)
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  console.log(process.env.API_KEY);
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   const contacts = await getContacts(q);
-  return json({ 
-    contacts, 
-    q });
+  return json({
+    contacts,
+    q,
+  });
 };
-
-
 
 export default function App() {
   const { contacts, q } = useLoaderData<typeof loader>();
@@ -45,10 +42,7 @@ export default function App() {
   const submit = useSubmit();
   const searching =
     navigation.location &&
-    new URLSearchParams(navigation.location.search).has(
-      "q"
-    );
-
+    new URLSearchParams(navigation.location.search).has("q");
 
   useEffect(() => {
     const searchField = document.getElementById("q");
@@ -69,14 +63,16 @@ export default function App() {
         <div id="sidebar">
           <h1>Remix Contacts</h1>
           <div>
-            <Form id="search-form"
+            <Form
+              id="search-form"
               onChange={(event) => {
                 const isFirstSearch = q === null;
                 submit(event.currentTarget, {
                   replace: !isFirstSearch,
                 });
               }}
-              role="search">
+              role="search"
+            >
               <input
                 id="q"
                 aria-label="Search contacts"
@@ -99,11 +95,7 @@ export default function App() {
                   <li key={contact.id}>
                     <NavLink
                       className={({ isActive, isPending }) =>
-                        isActive
-                          ? "active"
-                          : isPending
-                            ? "pending"
-                            : ""
+                        isActive ? "active" : isPending ? "pending" : ""
                       }
                       to={`contacts/${contact.id}`}
                     >
@@ -114,9 +106,7 @@ export default function App() {
                       ) : (
                         <i>No Name</i>
                       )}{" "}
-                      {contact.favorite ? (
-                        <span>★</span>
-                      ) : null}
+                      {contact.favorite ? <span>★</span> : null}
                     </NavLink>
                   </li>
                 ))}
@@ -130,11 +120,10 @@ export default function App() {
         </div>
         <div
           className={
-            navigation.state === "loading" && !searching
-              ? "loading"
-              : ""
+            navigation.state === "loading" && !searching ? "loading" : ""
           }
-          id="detail">
+          id="detail"
+        >
           <Outlet />
         </div>
 
