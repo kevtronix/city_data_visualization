@@ -26,7 +26,7 @@ const DATASET: DataOptionType[] = [
     initialViewState: {
       longitude: -73.9710129,
       latitude: 40.7637567, 
-      zoom: 11,
+      zoom: 12,
       pitch: 0,
       bearing: 0,
     },
@@ -43,7 +43,7 @@ const DATASET: DataOptionType[] = [
     initialViewState: {
       longitude: -118.4385022,
       latitude: 34.0825427,
-      zoom: 10,
+      zoom: 11,
     },
     dataUrl:
       "https://data.lacity.org/resource/6rrh-rzua.json?$limit=150000&$WHERE=within_box(location_1, 33.7035, -118.6682, 34.8233, -117.6464) AND location_1 IS NOT NULL",
@@ -58,7 +58,7 @@ const DATASET: DataOptionType[] = [
     initialViewState: {
       longitude:  -73.9710129,
       latitude: 40.7637567,
-      zoom: 10,
+      zoom: 12,
     },
     dataUrl:
       "https://data.cityofnewyork.us/resource/yjub-udmw.json",
@@ -73,7 +73,7 @@ const DATASET: DataOptionType[] = [
     initialViewState: {
       longitude:  -73.9710129,
       latitude: 40.7637567,
-      zoom: 10,
+      zoom: 12,
     },
     dataUrl:
       "https://data.cityofnewyork.us/resource/6smc-7mk6.json",
