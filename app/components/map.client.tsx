@@ -4,6 +4,9 @@ import { AmbientLight, PointLight, LightingEffect } from "@deck.gl/core";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import { DataOptionType } from "~/data";
 import { getPositions } from "../utils/map.utils";
+import { Box, CircularProgress } from "@mui/joy";
+import { useState, useEffect } from "react";
+
 
 const ambientLight = new AmbientLight({
   color: [255, 255, 255],
@@ -38,6 +41,9 @@ export default function Map({
   mapboxToken: string;
   data: DataOptionType;
 }) {
+  
+  const [loading, setLoading] = useState(true);
+
   const layers = [
     new HexagonLayer({
       id: data.id,
@@ -67,22 +73,61 @@ export default function Map({
       transitions: {
         elevationScale: 3000,
       },
+      onDataLoad: () => setLoading(false),
     }),
   ];
+
+  useEffect(() => {
+    setLoading(true);
+  }, [data.id]);
+
   return (
-    <div style={{ position: "relative", height: "100%" }}>
+    <Box position="relative" height="100%">
+    <Box position="relative" height="100%">
       <DeckGL
-        initialViewState={data.initialViewState}
-        effects={[lightingEffect]}
-        controller={true}
-        layers={layers}
+       initialViewState={data.initialViewState}
+       effects={[lightingEffect]}
+       controller={true}
+       layers={layers}
       >
         <GLMap
           mapboxAccessToken={mapboxToken}
           reuseMaps={true}
           mapStyle={MAP_STYLE}
         />
+        <Box
+          position="absolute"
+          top={8}
+          right={8}
+          borderRadius={8}
+          bgcolor="white"
+          style={{ maxWidth: "300px" }}
+        >
+          <Box p={2}>
+            <h2>{data.label}</h2>
+            <p>{data.description}</p>
+            <a href={data.referenceUrl} target="_blank" rel="noreferrer">
+              Reference data
+            </a>
+          </Box>
+        </Box>
       </DeckGL>
-    </div>
-  );
+    </Box>
+    {loading ? (
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        bgcolor="rgb(169, 169, 169, 0.5)"
+        alignItems="center"
+        justifyContent="center"
+        display="flex"
+      >
+        <CircularProgress />
+      </Box>
+    ) : null}
+  </Box>
+);
 }
